@@ -19,7 +19,7 @@ app.use(bodyParser.json());
 
 app.use("/api", routes);
 
-const PORT = process.env.PORT || 10000;
+const PORT = process.env.PORT;
 app.listen(PORT, () => {
 	console.log(`Server is running on http://localhost:${PORT}`);
 });
