@@ -5,7 +5,7 @@
 	"scripts": {
 		"dev": "ts-node-dev --respawn src/app.ts",
 		"build": "tsc",
-		"start": "ts-node src/app.ts"
+		"start": "npx prisma db push && ts-node src/app.ts"
 	},
 	"keywords": [],
 	"author": "",
@@ -13,6 +13,7 @@
 	"description": "",
 	"dependencies": {
 		"@prisma/client": "^6.5.0",
+		"pg": "^8.11.0",
 		"cors": "^2.8.5",
 		"dotenv": "^16.4.7",
 		"express": "^4.21.2",
