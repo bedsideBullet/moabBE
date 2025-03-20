@@ -34,7 +34,7 @@ export const registerUser = async (req: Request, res: Response) => {
 				city,
 				state,
 				phone,
-				year,
+				year: year ? parseInt(year) : null,
 				make,
 			},
 		});
