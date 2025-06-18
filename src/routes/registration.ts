@@ -5,6 +5,7 @@ import {
 	getUserById,
 	deleteRegistrations,
 	updateRegistration,
+	resetDemoData, // <-- add this import
 } from "../controllers/registrationController";
 
 const router = Router();
@@ -30,6 +31,18 @@ router.post("/delete", async (req, res) => {
 		res.status(500).json({ message: "Server error" });
 	}
 });
+
+// --- Add this route for resetting demo data ---
+router.post("/reset-demo", async (req, res) => {
+	console.log("Received a POST request on /registration/reset-demo");
+	try {
+		await resetDemoData(req, res);
+	} catch (error) {
+		console.error("Error in /registration/reset-demo route:", error);
+		res.status(500).json({ message: "Server error" });
+	}
+});
+// ----------------------------------------------
 
 router.get("/registrations", async (req, res) => {
 	console.log("Received a GET request on /registrations");
@@ -59,7 +72,7 @@ router.patch("/:id", async (req, res) => {
 	try {
 		await updateRegistration(req, res);
 	} catch (error) {
-		console.error("Error in /registration/:id route:", error);
+		console.error("Error updating registration:", error);
 		res.status(500).json({ message: "Server error" });
 	}
 });

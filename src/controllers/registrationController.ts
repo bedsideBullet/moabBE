@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { PrismaClient } from "@prisma/client";
+import { faker } from "@faker-js/faker";
 
 const prisma = new PrismaClient();
 
@@ -122,5 +123,33 @@ export const updateRegistration = async (req: Request, res: Response) => {
 	} catch (error) {
 		console.error("Error updating registration:", error);
 		res.status(500).json({ message: "Error updating user", error });
+	}
+};
+
+export const resetDemoData = async (_req: Request, res: Response) => {
+	try {
+		await prisma.user.deleteMany();
+
+		const fakeUsers = Array.from({ length: 15 }).map(() => ({
+			firstName: faker.person.firstName(),
+			lastName: faker.person.lastName(),
+			email: faker.internet.email(),
+			vehicleModel: faker.vehicle.model(),
+			otherNotes: faker.lorem.sentence(),
+			city: faker.location.city(),
+			state: faker.location.state(),
+			phone: faker.helpers.replaceSymbols("(###) ###-####"),
+			year: faker.date.past({ years: 30 }).getFullYear(),
+			make: faker.vehicle.manufacturer(),
+		}));
+
+		await prisma.user.createMany({ data: fakeUsers });
+
+		res
+			.status(200)
+			.json({ message: "Demo data reset successfully", count: 15 });
+	} catch (error) {
+		console.error("Error resetting demo data:", error);
+		res.status(500).json({ message: "Error resetting demo data", error });
 	}
 };
